@@ -3,7 +3,9 @@ from sqlalchemy import (
     Integer,
     String,
     ForeignKey,
-    Enum
+    Enum,
+    Text,
+    Table
 )
 
 from sqlalchemy.orm import relationship
@@ -20,6 +22,24 @@ class UserRole(enum.Enum):
     employer = "employer"
 
     admin = "admin"
+
+
+saved_jobs = Table(
+    "saved_jobs",
+    Base.metadata,
+
+    Column(
+        "user_id",
+        Integer,
+        ForeignKey("users.user_id")
+    ),
+
+    Column(
+        "job_id",
+        Integer,
+        ForeignKey("jobs.id")
+    )
+)
 
 
 class User(Base):
@@ -59,6 +79,18 @@ class User(Base):
         uselist=False
     )
 
+    employer_profile = relationship(
+        "Employer",
+        back_populates="user",
+        uselist=False
+    )
+
+    saved_jobs_relation = relationship(
+        "Job",
+        secondary=saved_jobs,
+        back_populates="saved_by_users"
+    )
+
 
 class Candidate(Base):
 
@@ -93,4 +125,90 @@ class Candidate(Base):
     user = relationship(
         "User",
         back_populates="candidate_profile"
+    )
+
+
+class Employer(Base):
+
+    __tablename__ = "employers"
+
+    id = Column(
+        Integer,
+        primary_key=True
+    )
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.user_id")
+    )
+
+    company_name = Column(
+        String(100)
+    )
+
+    company_description = Column(
+        Text
+    )
+
+    location = Column(
+        String(100)
+    )
+
+    website = Column(
+        String(255)
+    )
+
+    user = relationship(
+        "User",
+        back_populates="employer_profile"
+    )
+
+    jobs = relationship(
+        "Job",
+        back_populates="employer"
+    )
+
+class Job(Base):
+
+    __tablename__ = "jobs"
+
+    id = Column(
+        Integer,
+        primary_key=True
+    )
+
+    title = Column(
+        String(100)
+    )
+
+    description = Column(
+        Text
+    )
+
+    salary = Column(
+        String(100)
+    )
+
+    location = Column(
+        String(100)
+    )
+
+    experience_required = Column(
+        Integer
+    )
+
+    employer_id = Column(
+        Integer,
+        ForeignKey("employers.id")
+    )
+
+    employer = relationship(
+        "Employer",
+        back_populates="jobs"
+    )
+
+    saved_by_users = relationship(
+        "User",
+        secondary=saved_jobs,
+        back_populates="saved_jobs_relation"
     )
