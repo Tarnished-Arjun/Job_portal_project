@@ -14,7 +14,6 @@ from app.database import Base
 
 import enum
 
-
 class UserRole(enum.Enum):
 
     candidate = "candidate"
@@ -52,26 +51,18 @@ class User(Base):
         index=True
     )
 
-    full_name = Column(
-        String(100)
-    )
+    full_name = Column(String(100))
 
     email = Column(
         String(100),
         unique=True
     )
 
-    hashed_password = Column(
-        String(255)
-    )
+    hashed_password = Column(String(255))
 
-    phone = Column(
-        String(20)
-    )
+    phone = Column(String(20))
 
-    role = Column(
-        Enum(UserRole)
-    )
+    role = Column(Enum(UserRole))
 
     candidate_profile = relationship(
         "Candidate",
@@ -106,21 +97,13 @@ class Candidate(Base):
         ForeignKey("users.user_id")
     )
 
-    no_of_experience = Column(
-        Integer
-    )
+    no_of_experience = Column(Integer)
 
-    skills = Column(
-        String(255)
-    )
+    skills = Column(String(255))
 
-    linkedin_url = Column(
-        String(255)
-    )
+    linkedin_url = Column(String(255))
 
-    github_url = Column(
-        String(255)
-    )
+    github_url = Column(String(255))
 
     user = relationship(
         "User",
@@ -142,21 +125,13 @@ class Employer(Base):
         ForeignKey("users.user_id")
     )
 
-    company_name = Column(
-        String(100)
-    )
+    company_name = Column(String(100))
 
-    company_description = Column(
-        Text
-    )
+    company_description = Column(Text)
 
-    location = Column(
-        String(100)
-    )
+    location = Column(String(100))
 
-    website = Column(
-        String(255)
-    )
+    website = Column(String(255))
 
     user = relationship(
         "User",
@@ -177,25 +152,15 @@ class Job(Base):
         primary_key=True
     )
 
-    title = Column(
-        String(100)
-    )
+    title = Column(String(100))
 
-    description = Column(
-        Text
-    )
+    description = Column(Text)
 
-    salary = Column(
-        String(100)
-    )
+    salary = Column(String(100))
 
-    location = Column(
-        String(100)
-    )
+    location = Column(String(100))
 
-    experience_required = Column(
-        Integer
-    )
+    experience_required = Column(Integer)
 
     employer_id = Column(
         Integer,

@@ -16,7 +16,6 @@ class UserRegister(BaseModel):
     role: UserRole
 
 
-
 class UserLogin(BaseModel):
 
     email: str
@@ -29,7 +28,6 @@ class TokenResponse(BaseModel):
     access_token: str
 
     token_type: str
-
 
 
 class UserResponse(BaseModel):
@@ -48,7 +46,24 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
+class JobCreate(BaseModel):
+
+    title: str
+
+    description: str
+
+    salary: str
+
+    location: str
+
+    experience_required: int
+
+    employer_id: int
+
+
 class CandidateCreate(BaseModel):
+
+    user_id: int
 
     no_of_experience: int
 
@@ -58,17 +73,33 @@ class CandidateCreate(BaseModel):
 
     github_url: str
 
-class CandidateResponse(BaseModel):
+
+class EmployerCreate(BaseModel):
+
+    user_id: int
+
+    company_name: str
+
+    company_description: str
+
+    location: str
+
+    website: str
+
+
+class JobResponse(BaseModel):
 
     id: int
 
-    no_of_experience: int
+    title: str
 
-    skills: str
+    description: str
 
-    linkedin_url: str
+    salary: str
 
-    github_url: str
+    location: str
+
+    experience_required: int
 
     class Config:
         from_attributes = True

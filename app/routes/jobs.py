@@ -1,4 +1,18 @@
-from fastapi import APIRouter
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException
+)
+
+from sqlalchemy.orm import Session
+
+from app.database import SessionLocal
+
+from app import (
+    models,
+    schemas
+)
+
 
 router = APIRouter(
     prefix="/jobs",
@@ -6,17 +20,36 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-def get_all_jobs():
+def get_db():
 
-    return {
-        "message": "All Jobs Fetched Successfully"
-    }
+    db = SessionLocal()
+
+    try:
+        yield db
+
+    finally:
+        db.close()
 
 
-@router.get("/{job_id}")
-def get_job_by_id(job_id: int):
+@router.post("/")
+def create_job(
+    data: schemas.JobCreate,
+    db: Session = Depends(get_db)
+):
 
-    return {
-        "message": f"Job {job_id} fetched successfully"
-    }
+    job = models.Job(
+        title=data.title,
+        description=data.description,
+        salary=data.salary,
+        location=data.location,
+        experience_required=data.experience_required,
+        employer_id=data.employer_id
+    )
+
+    db.add(job)
+
+    db.commit()
+
+    db.refresh(job)
+
+    return job

@@ -1,14 +1,68 @@
-from fastapi import APIRouter
+from fastapi import  APIRouter,Depends,HTTPException
+from sqlalchemy.orm import Session
+from app.database import SessionLocal
+from app import models,schemas
 
 router = APIRouter(
     prefix="/candidate",
     tags=["Candidate"]
 )
 
+def get_db():
 
-@router.get("/")
-def candidate_home():
+    db = SessionLocal()
 
-    return {
-        "message": "Candidate Route Working"
-    }
+    try:
+        yield db
+
+    finally:
+        db.close()
+
+@router.get("/{candidate_id}")
+def get_candidate_profile(
+    candidate_id: int,
+    db: Session = Depends(get_db)
+):
+
+    candidate = db.query(models.Candidate).filter(
+        models.Candidate.id == candidate_id
+    ).first()
+
+    if not candidate:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Candidate not found"
+        )
+
+    return candidate
+
+
+@router.put("/{candidate_id}")
+def update_candidate_profile(
+    candidate_id: int,
+    data: schemas.CandidateCreate,
+    db: Session = Depends(get_db)
+):
+
+    candidate = db.query(models.Candidate).filter(
+        models.Candidate.id == candidate_id
+    ).first()
+
+    if not candidate:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Candidate not found"
+        )
+
+    candidate.no_of_experience = data.no_of_experience
+    candidate.skills = data.skills
+    candidate.linkedin_url = data.linkedin_url
+    candidate.github_url = data.github_url
+
+    db.commit()
+
+    db.refresh(candidate)
+
+    return candidate
