@@ -11,8 +11,6 @@ router = APIRouter(
     tags=["Applications"]
 )
 
-
-
 @router.post("/")
 def apply_for_job(
     data: schemas.JobApplicationCreate,

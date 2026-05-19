@@ -79,7 +79,6 @@ def get_candidate_profile(
 
     return candidate
 
-
 @router.put("/{candidate_id}")
 def update_candidate_profile(
     candidate_id: int,

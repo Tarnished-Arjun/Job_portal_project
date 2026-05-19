@@ -15,7 +15,6 @@ from app import (
     schemas
 )
 
-
 router = APIRouter(
     prefix="/jobs",
     tags=["Jobs"]

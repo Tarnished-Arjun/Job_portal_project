@@ -120,7 +120,6 @@ def get_current_user(
 
     return user
 
-
 def admin_only(
     current_user: models.User = Depends(get_current_user)
 ):

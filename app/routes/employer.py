@@ -11,7 +11,6 @@ router = APIRouter(
 )
 
 
-
 @router.post("/")
 def create_employer_profile(
     data: schemas.EmployerCreate,

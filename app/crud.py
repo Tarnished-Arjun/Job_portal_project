@@ -81,7 +81,6 @@ def login_user(
             "role": user.role.value
         }
     )
-
     return {
         "access_token": access_token,
         "token_type": "bearer"
