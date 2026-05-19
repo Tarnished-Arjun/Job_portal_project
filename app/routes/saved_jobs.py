@@ -7,6 +7,8 @@ from app.database import SessionLocal
 
 from app import models
 
+from app.dependencies import get_db
+
 
 router = APIRouter(
     prefix="/saved-jobs",
@@ -14,16 +16,6 @@ router = APIRouter(
 )
 
 
-
-def get_db():
-
-    db = SessionLocal()
-
-    try:
-        yield db
-
-    finally:
-        db.close()
 
 
 @router.post("/{user_id}/{job_id}")

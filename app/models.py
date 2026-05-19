@@ -177,3 +177,13 @@ class Job(Base):
         secondary=saved_jobs,
         back_populates="saved_jobs_relation"
     )
+
+class JobApplication(Base):
+    __tablename__ = "job_applications"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    candidate_id = Column(Integer, ForeignKey("candidates.id"))
+    job_id = Column(Integer, ForeignKey("jobs.id"))
+
+    status = Column(String(50), default="Applied")

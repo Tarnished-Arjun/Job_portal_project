@@ -11,6 +11,8 @@ from app import models
 
 from app.auth import admin_only
 
+from app.dependencies import get_db
+
 
 router = APIRouter(
     prefix="/admin",
@@ -18,15 +20,6 @@ router = APIRouter(
 )
 
 
-def get_db():
-
-    db = SessionLocal()
-
-    try:
-        yield db
-
-    finally:
-        db.close()
 
 
 @router.get("/jobs")

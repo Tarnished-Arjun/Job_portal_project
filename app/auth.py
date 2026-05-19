@@ -28,6 +28,8 @@ from datetime import (
 
 from app.config import settings
 
+from app.dependencies import get_db
+
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -74,19 +76,10 @@ def create_access_token(data: dict):
 
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/auth/login"
+    tokenUrl="auth/login"
 )
 
 
-def get_db():
-
-    db = SessionLocal()
-
-    try:
-        yield db
-
-    finally:
-        db.close()
 
 
 def get_current_user(

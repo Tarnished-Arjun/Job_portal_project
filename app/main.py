@@ -11,6 +11,8 @@ from app.routes import (
 
 from app import models
 
+from app.routes import applications
+
 
 app = FastAPI()
 

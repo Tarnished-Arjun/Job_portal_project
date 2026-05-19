@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 
+from app.dependencies import get_db
+
 from app import (
     models,
     schemas
@@ -19,16 +21,6 @@ router = APIRouter(
     tags=["Jobs"]
 )
 
-
-def get_db():
-
-    db = SessionLocal()
-
-    try:
-        yield db
-
-    finally:
-        db.close()
 
 
 @router.post("/")

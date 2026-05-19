@@ -103,3 +103,7 @@ class JobResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class JobApplicationCreate(BaseModel):
+    candidate_id: int
+    job_id: int
